@@ -1,0 +1,35 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Weather" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/dark_blue</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/light_blue</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/dark_blue</item>
+        <item name="colorSecondaryVariant">@color/white</item>
+        <item name="colorOnSecondary">@color/light_blue</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <!-- Customize your theme here. -->
+
+    </style>
+
+    // SEARCH VIEW
+    <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <!-- Other style attributes here -->
+        <item name="android:textColorHint">@android:color/darker_gray</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="android:textCursorDrawable">@drawable/text_cursor_drawable</item>
+    </style>
+
+    <style name="Theme.AppCompat.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/dark_blue</item>
+        <item name="postSplashScreenTheme">@style/Theme.Weather</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/animated_logo</item>
+    </style>
+
+</resources>

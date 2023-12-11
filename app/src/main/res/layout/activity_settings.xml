@@ -1,0 +1,187 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/dark_blue"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayoutSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/dark_blue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolBarSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?actionBarSize"
+                app:title="Settings"
+                app:titleMarginStart="80dp"
+                app:titleTextColor="@color/white"
+                android:theme="?actionBarTheme"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/backBtnSettings"
+                android:layout_width="30dp"
+                android:layout_height="?actionBarSize"
+                app:icon="@drawable/ic_back"
+                app:iconTint="@color/white"
+                app:iconSize="30dp"
+                android:layout_marginStart="5dp"
+                android:outlineSpotShadowColor="@android:color/transparent"
+                android:outlineAmbientShadowColor="@android:color/transparent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:backgroundTint="@color/cobalt_blue"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="40dp"
+        android:elevation="7dp"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayoutSettings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/cobalt_blue"
+                android:layout_marginTop="20dp"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/TempUnitTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Temperature Unit"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="30dp"
+                        android:layout_centerVertical="true"
+                        android:textSize="15sp"
+
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        />
+                    <Spinner
+                        android:id="@+id/tempUnitSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dark_blue"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@android:color/darker_gray"
+                        />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/cobalt_blue"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/speedUnitTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Speed Unit"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="30dp"
+                        android:layout_centerVertical="true"
+                        android:textSize="15sp"
+                        />
+                    <Spinner
+                        android:id="@+id/speedUnitSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dark_blue"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@android:color/darker_gray"
+                        />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/cobalt_blue"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/cobalt_blue">
+                    <TextView
+                        android:id="@+id/autoRefreshTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="When to show notification"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="30dp"
+                        android:layout_centerVertical="true"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textSize="15sp"
+                        />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/pickTimeButton"
+                        android:layout_width="110dp"
+                        android:layout_height="45dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="Pick Time"
+                        android:textSize="12sp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/dark_blue"
+                        android:textColor="@color/white"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
