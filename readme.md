@@ -14,13 +14,13 @@ WeatherMate is a straightforward Android weather application designed for simpli
 
 ## Screenshots
 
-<img src="/screenshots/ss01.jpg" alt="App Screenshot" width="300"> <img src="/screenshots/ss02.jpg" alt="App Screenshot" width="300">
+<img src="/screenshots/ss01.png" alt="App Screenshot" width="300"> <img src="/screenshots/ss02.png" alt="App Screenshot" width="300">
 
 
-<img src="/screenshots/ss03.jpg" alt="App Screenshot" width="300"> <img src="/screenshots/ss04.jpg" alt="App Screenshot" width="300">
+<img src="/screenshots/ss03.png" alt="App Screenshot" width="300"> <img src="/screenshots/ss04.png" alt="App Screenshot" width="300">
 
 
-<img src="/screenshots/ss05.jpg" alt="App Screenshot" width="300"> 
+<img src="/screenshots/ss05.png" alt="App Screenshot" width="300"> 
 
 
 
