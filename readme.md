@@ -1,9 +1,9 @@
-# WeatherMate Android App
+# Weather Android App
 
 
 ## Introduction
 
-WeatherMate is a straightforward Android weather application designed for simplicity and efficiency. Access up-to-date temperature information sourced from a free API, explore city weather effortlessly through the search feature, and store your search history for future reference. With optional location detection, WeatherMate ensures you receive accurate and instant weather updates for your current location.
+Weather is a straightforward Android weather application designed for simplicity and efficiency. Access up-to-date temperature information sourced from a free API, explore city weather effortlessly through the search feature, and store your search history for future reference. With optional location detection, Weather ensures you receive accurate and instant weather updates for your current location.
 
 ## Features
 
@@ -49,7 +49,7 @@ WeatherMate is a straightforward Android weather application designed for simpli
 
 ### Usage
 
-1. Launch WeatherMate on your Android device.
+1. Launch Weather on your Android device.
 2. Upon the first launch, grant location permission for automatic detection.
 3. Explore the app by searching for cities or allowing automatic location updates.
 4. Swipe through the clean interface to access real-time weather information.
