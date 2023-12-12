@@ -28,6 +28,14 @@ WeatherMate is a straightforward Android weather application designed for simpli
 
 ### Installation
 
+1. goto apks folder 
+
+2. copy apk file
+
+3. Install it in your Android phone
+   
+         or 
+
 1. Clone this GitHub repository:
    ```shell
    git clone https://github.com/IamAbhinavSINGH/Weather
@@ -37,6 +45,7 @@ WeatherMate is a straightforward Android weather application designed for simpli
 3. Build and run the app on your Android emulator or physical device.
 
 4. Start using WeatherAPP!
+
 
 ### Usage
 
