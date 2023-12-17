@@ -23,7 +23,7 @@
         android:id="@+id/headerTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Weather"
+        android:text="Climcast"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:layout_marginStart="40dp"
@@ -32,6 +32,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerIv"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
