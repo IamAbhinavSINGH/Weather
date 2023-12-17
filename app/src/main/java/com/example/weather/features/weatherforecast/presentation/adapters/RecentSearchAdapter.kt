@@ -13,7 +13,7 @@ import com.example.weather.features.weatherforecast.presentation.ui.home.MainAct
 import com.example.weather.features.weatherforecast.presentation.ui.utils.RecentSearchHistoryDetails
 
 class RecentSearchAdapter(val context: Context):
-ListAdapter<RecentSearchHistoryDetails, RecentSearchAdapter.RecentSearchViewViewHolder>(RecentSearchAdapter.RecentSearchesListCallBack()){
+ListAdapter<RecentSearchHistoryDetails, RecentSearchAdapter.RecentSearchViewViewHolder>(RecentSearchesListCallBack()){
 
     class RecentSearchViewViewHolder(val binding: ListItemRecentSearchesBinding): RecyclerView.ViewHolder(binding.root){
     }

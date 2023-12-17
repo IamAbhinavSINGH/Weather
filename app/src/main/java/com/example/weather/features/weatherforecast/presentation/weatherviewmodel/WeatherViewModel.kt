@@ -43,6 +43,7 @@ class WeatherViewModel @Inject constructor(
                 )
                 locationTracker.getCurrentLocation()?.let{
                     //Location retrieved Successfully
+                    Log.e("Location", "Location retrieved successfully!!")
                     getForecastWeather("${it.latitude},${it.longitude}")
 
                 }?: kotlin.run {

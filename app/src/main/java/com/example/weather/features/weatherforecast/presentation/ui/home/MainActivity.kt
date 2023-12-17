@@ -11,6 +11,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,6 +27,7 @@ import com.example.weather.features.weatherforecast.presentation.adapters.Future
 import com.example.weather.features.weatherforecast.presentation.adapters.HourlyWeatherRVAdapter
 import com.example.weather.features.weatherforecast.presentation.adapters.RecentSearchAdapter
 import com.example.weather.features.weatherforecast.presentation.adapters.WeatherDetailRVAdapter
+import com.example.weather.features.weatherforecast.presentation.ui.favlocation.LocationActivity
 import com.example.weather.features.weatherforecast.presentation.ui.utils.CustomProgressDialog
 import com.example.weather.features.weatherforecast.presentation.ui.utils.LocationPermissionTextProvider
 import com.example.weather.features.weatherforecast.presentation.ui.utils.PermissionBottomSheetDialog
@@ -58,8 +60,10 @@ class MainActivity : AppCompatActivity() {
     private val recentSearchAdapter = RecentSearchAdapter(this)
     private val currentDateTime: LocalDateTime? = LocalDateTime.now()
     private var isSearchResult: Boolean = false
+    private lateinit var searchResult : String
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var headerImageView: ImageView
+    private lateinit var headerTextView: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,17 +73,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolBar)
 
-        // Create Activity from searchResults
-        val searchResult =  intent.getStringExtra("SearchResult")
-        if(searchResult != null) {
+        /*
+            Create Activity from searchResults
+            If the maicActivity is created through by another activity that means it provided a location name to be
+            seached so, use that location to show weather instead of using current location
+        */
+
+        val searched =  intent.getStringExtra("SearchResult")
+        if(searched != null) {
             val recentHistoryList = getListOfSearchedLocations()
-            viewModel.loadWeatherInfo(searchResult, true, lastSearchedLocation = recentHistoryList[0])
+            searchResult = searched
             isSearchResult = true
+            viewModel.loadWeatherInfo(searchResult, isSearchResult, lastSearchedLocation = recentHistoryList[0])
         }
 
         requestPermission()
         setUpNavigationDrawer()
         showProgressDialog()
+        refreshWeatherDetails()
 
         setDetails()
         setUpRVAdapters()
@@ -95,29 +106,35 @@ class MainActivity : AppCompatActivity() {
     private fun setUpNavigationDrawer() {
 
         binding.toolBar.setNavigationOnClickListener {
-            binding.drawerLayout.open()
+             binding.drawerLayout.open()
         }
 
         val headerView = binding.navView.getHeaderView(0)
         headerImageView = headerView.findViewById(R.id.headerIv) as ImageView
-
+        headerTextView = headerView.findViewById(R.id.headerTV) as TextView
 
         binding.navView.setNavigationItemSelectedListener {
-
-            when(it.itemId){
+         when(it.itemId){
                 R.id.settings -> {
                     Intent(this, SettingsActivity::class.java).also {intent ->
                         startActivity(intent)
                     }
-                    it.isChecked = false
                     binding.drawerLayout.close()
                     return@setNavigationItemSelectedListener false
                 }
+             R.id.location -> {
+                 Intent(this, LocationActivity::class.java).also { intent ->
+                     startActivity(intent)
+                 }
+                 binding.drawerLayout.close()
+                 return@setNavigationItemSelectedListener false
+             }
                 R.id.newContents ->{Toast.makeText(this, "What's new", Toast.LENGTH_SHORT).show()}
                 R.id.alerts ->{Toast.makeText(this, "Alerts", Toast.LENGTH_SHORT).show()}
             }
             false
         }
+
     }
 
     private fun requestPermission(){
@@ -184,7 +201,10 @@ class MainActivity : AppCompatActivity() {
                     viewModel.loadWeatherInfo("", false, lastSearchedLocation = recentHistory[0])
                 else
                     viewModel.loadWeatherInfo("", false, lastSearchedLocation = "")
+            }else {
+                viewModel.loadWeatherInfo(searchResult , true , "")
             }
+
             Log.e("LocationPermission", "Permissions Granted")
         }
         else{
@@ -196,25 +216,27 @@ class MainActivity : AppCompatActivity() {
         viewModel.state.observe(this) {
 
             if(!it.isLoading){
-               dismissProgressDialog()
+                binding.swipeRefreshLayout.isRefreshing = false
+                dismissProgressDialog()
             }
-
-            if(it.error != null){
+            else if(it.error != null){
                 showDialogForCouldntFindLocation()
             }
 
             if(it.error == null && !it.isLoading){
+                Log.e("Weather Details" , "Details Updated")
                 binding.linearLayoutMainActivity.visibility = View.VISIBLE
-                viewModel.state.value?.weatherInfo?.weatherDataPerDay?.get(0)?.get(currentDateTime!!.hour)?.apply {
 
+                binding.temperatureTV.text = it.weatherInfo?.currentWeatherData?.tempC?.toInt().toString()
+                val feelsLikeTemp = "Feels like ${it.weatherInfo?.currentWeatherData?.feelslikeC}"
+                binding.feelsLikeTV.text = feelsLikeTemp
+
+                viewModel.state.value?.weatherInfo?.weatherDataPerDay?.get(0)?.get(currentDateTime!!.hour)?.apply {
                     val maxMinTemp = "${maxTemperatureInCelsius}/${minTemperatureInCelsius}"
-                    val feelsLikeTemp = "Feels like $feelsLikeCelsius"
 
                     binding.locationTV.text = location
                     binding.conditionTV.text = condition
-                    binding.temperatureTV.text = temperatureCelsius.toInt().toString()
                     binding.maxMinTempTV.text = maxMinTemp
-                    binding.feelsLikeTV.text = feelsLikeTemp
                     binding.timeTV.text = time.hour.toString()
 
                     updateAndDisplayTime()
@@ -224,6 +246,8 @@ class MainActivity : AppCompatActivity() {
                         placeholder(R.drawable.weather_icon)
                     }
                     headerImageView.adjustViewBounds = true
+                    headerTextView.text = this.location
+                    binding.toolBar.title = this.location
 
                     weatherDetailRVAdapter.submitList(makeListForWeatherDetailRV(this))
                 }
@@ -232,10 +256,6 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
-    }
-
-    private fun showDialogForCouldntFindLocation(){
-        DialogForCouldntFindLocation { checkPermission() }.show(supportFragmentManager, "ERROR_DIALOG")
     }
 
     private fun setUpRVAdapters(){
@@ -320,10 +340,6 @@ class MainActivity : AppCompatActivity() {
             locationWeatherMap[locationName]
         }
 
-        Log.e("hello" , "${searchedLocations.size}")
-        Log.e("hello" , "retrievedLocationWeatherList size -> ${retrievedLocationWeather.size}")
-        Log.e("hello" , "finalList -> ${listOfRecentSearchAdapter.size}")
-
         recentSearchAdapter.submitList(listOfRecentSearchAdapter.toList())
     }
 
@@ -373,6 +389,12 @@ class MainActivity : AppCompatActivity() {
         return forecastWeatherDataList
     }
 
+    private fun refreshWeatherDetails(){
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            checkPermission()
+        }
+    }
+
     private fun showProgressDialog(){
         // Progress DIALOG
         customProgressDialog =
@@ -390,6 +412,10 @@ class MainActivity : AppCompatActivity() {
     private fun getListOfSearchedLocations(): List<String>{
         val searchHistoryManager = SearchHistoryManager.getInstance(context =  applicationContext)
         return searchHistoryManager.getSearchHistory()
+    }
+
+    private fun showDialogForCouldntFindLocation(){
+        DialogForCouldntFindLocation { checkPermission() }.show(supportFragmentManager, "ERROR_DIALOG")
     }
 
 }

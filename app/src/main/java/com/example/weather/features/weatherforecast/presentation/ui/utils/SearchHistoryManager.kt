@@ -37,6 +37,7 @@ class SearchHistoryManager(context: Context) {
         }
 
         val maxHistorySize = 8
+
         while(currentHistory.size > maxHistorySize){
             currentHistory.removeAt(currentHistory.size -1)
         }

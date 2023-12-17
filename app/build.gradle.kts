@@ -87,7 +87,8 @@ dependencies {
     //GSON for SearchHistoryManager
     implementation("com.google.code.gson:gson:2.10.1")
 
-    //Animated Splash Screen
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    //SwipeRefreshlayout
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+
 
 }

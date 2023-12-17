@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather.databinding.ActivitySearchBinding
 import com.example.weather.features.weatherforecast.presentation.adapters.SearchResultsRVAdatper
@@ -15,8 +14,6 @@ import com.example.weather.features.weatherforecast.presentation.ui.home.MainAct
 import com.example.weather.features.weatherforecast.presentation.weatherviewmodel.WeatherViewModel
 import com.example.weather.features.weatherforecast.presentation.ui.utils.SearchHistoryManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
@@ -73,7 +70,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun findLocationBasedOnSearchQuery(locationName: String) {
         viewModel.getAutoCompleteResults(locationName)
-        Thread.sleep(500)
+
         viewModel.state.observe(this){
 
             if(!it.searchResults.isNullOrEmpty() && clickedOnSearchBolean){
@@ -85,7 +82,7 @@ class SearchActivity : AppCompatActivity() {
                 intent.putExtra("SearchResult", locationName)
                 startActivity(intent)
             }
-            else{
+            if(it.error != null){
                 Toast.makeText(this@SearchActivity, "Couldn't find location", Toast.LENGTH_SHORT).show()
             }
         }
