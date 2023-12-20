@@ -22,6 +22,23 @@ class SearchHistoryManager(context: Context) {
         }
     }
 
+    fun addFavLocation(locationName: String){
+        if(locationName.isNotBlank()){
+            with(searchPreferences.edit()){
+                putString("FavLocation" , locationName)
+                apply()
+            }
+        }
+    }
+
+    fun getFavLocation(): String{
+        val location = searchPreferences.getString("FavLocation" , "")
+        return if(!location.isNullOrEmpty())
+            location
+        else
+            ""
+    }
+
     fun addSearchHistory(location: String){
         val currentHistory = getSearchHistory().toMutableList()
 

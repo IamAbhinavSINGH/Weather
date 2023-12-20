@@ -12,7 +12,6 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -36,7 +35,9 @@ import com.example.weather.features.weatherforecast.presentation.ui.settings.Set
 import com.example.weather.features.weatherforecast.presentation.ui.utils.DialogForCouldntFindLocation
 import com.example.weather.features.weatherforecast.presentation.ui.utils.RecentSearchHistoryDetails
 import com.example.weather.features.weatherforecast.presentation.ui.utils.SearchHistoryManager
-import com.example.weather.features.weatherforecast.presentation.utils.WeatherDetailFORRV
+import com.example.weather.features.weatherforecast.presentation.states.WeatherDetailFORRV
+import com.example.weather.features.weatherforecast.presentation.ui.analysis.ReviewActivity
+import com.example.weather.features.weatherforecast.presentation.ui.newupdates.NewUpdatesActivity
 import com.example.weather.features.weatherforecast.presentation.weatherviewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             val recentHistoryList = getListOfSearchedLocations()
             searchResult = searched
             isSearchResult = true
-            viewModel.loadWeatherInfo(searchResult, isSearchResult, lastSearchedLocation = recentHistoryList[0])
+            viewModel.loadWeatherInfo(searchResult, isSearchResult,recentHistoryList[0], "")
         }
 
         requestPermission()
@@ -102,7 +103,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
     private fun setUpNavigationDrawer() {
 
         binding.toolBar.setNavigationOnClickListener {
@@ -129,8 +129,22 @@ class MainActivity : AppCompatActivity() {
                  binding.drawerLayout.close()
                  return@setNavigationItemSelectedListener false
              }
-                R.id.newContents ->{Toast.makeText(this, "What's new", Toast.LENGTH_SHORT).show()}
-                R.id.alerts ->{Toast.makeText(this, "Alerts", Toast.LENGTH_SHORT).show()}
+
+             R.id.analysis -> {
+                 Intent(this, ReviewActivity::class.java).also {intent ->
+                     startActivity(intent)
+                 }
+                 binding.drawerLayout.close()
+                 return@setNavigationItemSelectedListener false
+             }
+
+                R.id.newContents ->{
+                    Intent(this, NewUpdatesActivity::class.java).also{intent->
+                        startActivity(intent)
+                    }
+                    binding.drawerLayout.close()
+                    return@setNavigationItemSelectedListener false
+                }
             }
             false
         }
@@ -189,13 +203,31 @@ class MainActivity : AppCompatActivity() {
         permissionBottomSheetDialog.show(supportFragmentManager, PermissionBottomSheetDialog.Tag)
     }
 
+
+    /*
+        It will first use current location to get weather info, if it fails then it will use favLocation
+        to get the weather data and if it fails then it will use last search History to get weather info.
+
+        For the first time use when none of these will be avalable we don't really have any choice other
+        than asking the user to open their GPS to get the weather info.
+     */
+
     private fun checkPermission(){
 
         val recentHistory = getListOfSearchedLocations()
+        val searchHistoryManager = SearchHistoryManager.getInstance(applicationContext)
+
+        val favLocation = searchHistoryManager.getFavLocation()
 
         if(checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
             && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
         ){
+
+            if(!isSearchResult)
+                viewModel.loadWeatherInfo("", isSearchResult , recentHistory[0], favLocation)
+            else
+                viewModel.loadWeatherInfo(searchResult, isSearchResult, recentHistory[0], favLocation)
+        /*
             if(!isSearchResult){
                 if (recentHistory.isNotEmpty())
                     viewModel.loadWeatherInfo("", false, lastSearchedLocation = recentHistory[0])
@@ -205,6 +237,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.loadWeatherInfo(searchResult , true , "")
             }
 
+        */
             Log.e("LocationPermission", "Permissions Granted")
         }
         else{

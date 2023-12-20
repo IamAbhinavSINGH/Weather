@@ -14,26 +14,26 @@
         </group>
 
         <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/analysis"
+                    android:icon="@drawable/analysis_svg"
+                    android:title="Analysis"
+                    android:iconTint="@color/white"
+                    />
 
-        <item
-            android:id="@+id/settings"
-            android:icon="@drawable/ic_settings_24"
-            android:title="Settings"
-            android:iconTint="@color/white"
-            />
+                <item
+                    android:id="@+id/settings"
+                    android:icon="@drawable/ic_settings_24"
+                    android:title="Settings"
+                    android:iconTint="@color/white"
+                    />
 
-        <item
-            android:id="@+id/newContents"
-            android:title="What's new?"
-            android:icon="@drawable/ic_alerts"
-            android:iconTint="@color/white"
-            />
-        <item
-            android:id="@+id/alerts"
-            android:title="Alerts"
-            android:icon="@drawable/alert"
-            android:iconTint="@color/white"
-            />
+                <item
+                    android:id="@+id/newContents"
+                    android:title="What's new?"
+                    android:icon="@drawable/ic_alerts"
+                    android:iconTint="@color/white"
+                    />
 
         </group>
 </menu>

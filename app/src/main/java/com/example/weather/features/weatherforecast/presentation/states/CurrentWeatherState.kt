@@ -1,4 +1,4 @@
-package com.example.weather.features.weatherforecast.presentation.utils
+package com.example.weather.features.weatherforecast.presentation.states
 
 import com.example.weather.features.weatherforecast.data.models.Current
 

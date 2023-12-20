@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.R
 import com.example.weather.databinding.ListItemWeatherDetailsBinding
-import com.example.weather.features.weatherforecast.presentation.utils.WeatherDetailFORRV
+import com.example.weather.features.weatherforecast.presentation.states.WeatherDetailFORRV
 
 class WeatherDetailRVAdapter():
 ListAdapter<WeatherDetailFORRV, WeatherDetailRVAdapter.WeatherDetailViewHolder>(WeatherClassDiffCallBack()){

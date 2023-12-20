@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.weather.features.weatherforecast.domain.location.LocationTracker
 import com.example.weather.features.weatherforecast.domain.repository.WeatherRepository
 import com.example.weather.features.weatherforecast.domain.util.Resource
-import com.example.weather.features.weatherforecast.presentation.utils.CurrentWeatherState
-import com.example.weather.features.weatherforecast.presentation.utils.WeatherState
+import com.example.weather.features.weatherforecast.presentation.states.CurrentWeatherState
+import com.example.weather.features.weatherforecast.presentation.states.WeatherState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

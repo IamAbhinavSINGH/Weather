@@ -16,6 +16,11 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
+    <string name="credits">Developed by:\n
+	                    Abhinav Singh\n
+	                    Akshat Rawat\n
+	                    Atishay jain</string>
+
     <string-array name="tempUnit">
         <item>Celsius</item>
         <item>Fahrenheit</item>
@@ -25,5 +30,7 @@
         <item>Km/H</item>
         <item>Mp/H</item>
     </string-array>
+    <string name="title_activity_analysis_activitty">AnalysisActivitty</string>
+    <string name="title_activity_review">ReviewActivity</string>
 
 </resources>

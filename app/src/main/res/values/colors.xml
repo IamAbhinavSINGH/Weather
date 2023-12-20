@@ -17,4 +17,8 @@
     <color name="secondary_blue">#0000ff</color>
     <color name="light_blue">#FF137FF4</color>
     <color name="baby_blue">#89CFF0</color>
+    <color name="sand_dollar">#E5DDC8</color>
+    <color name="red">#DB1F48</color>
+    <color name="light_green">#90EE90</color>
+    <color name="light_yellow">#ffff00</color>
 </resources>

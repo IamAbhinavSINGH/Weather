@@ -18,6 +18,25 @@
         android:theme="@style/Theme.Weather"
         tools:targetApi="31">
         <activity
+            android:name=".features.weatherforecast.presentation.ui.newupdates.NewUpdatesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".features.weatherforecast.presentation.ui.newupdates.NewUpdates"
+            android:exported="false" />
+        <activity
+            android:name=".features.weatherforecast.presentation.ui.analysis.ReviewActivity"
+            android:exported="false"
+            android:label="@string/title_activity_review"
+            android:theme="@style/Theme.Weather" />
+        <activity
+            android:name=".features.weatherforecast.presentation.ui.analysis.AnalysisActivity"
+            android:exported="false" />
+        <activity
+            android:name=".features.weatherforecast.presentation.ui.analysis.AnalysisActivitty"
+            android:exported="false"
+            android:label="@string/title_activity_analysis_activitty"
+            android:theme="@style/Theme.Weather" />
+        <activity
             android:name=".features.weatherforecast.presentation.ui.favlocation.LocationActivity"
             android:exported="false" />
         <activity
