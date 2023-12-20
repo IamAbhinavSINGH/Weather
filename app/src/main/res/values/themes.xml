@@ -15,13 +15,14 @@
         <item name="android:windowLightStatusBar">false</item>
         <!-- Customize your theme here. -->
     </style>
-    
+
     <style name="Theme.Weather.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     // SEARCH VIEW
+
     <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
         <!-- Other style attributes here -->
         <item name="android:textColorHint">@android:color/darker_gray</item>

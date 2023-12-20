@@ -111,6 +111,10 @@ class LocationActivity : AppCompatActivity(), OnItemClickListener , onOtherFavLo
 
                 binding.searchResultsCV.visibility = View.INVISIBLE
                 binding.searchResultsRV.visibility = View.INVISIBLE
+
+
+// Save the fav Location to preferences so that It can be used in main Activity to get weather info
+                searchHistoryManager.addFavLocation(location)
             }
         }
 
@@ -156,7 +160,6 @@ class LocationActivity : AppCompatActivity(), OnItemClickListener , onOtherFavLo
             otherLocationAdapter.submitList(listOfRecentSearchAdapter.toList())
         }
     }
-
     private fun showInfoAboutFavLocation(){
         FavLocationInformationDialog().show(supportFragmentManager, "Fav_Location_Information")
     }

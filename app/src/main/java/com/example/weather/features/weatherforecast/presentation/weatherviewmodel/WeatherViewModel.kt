@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.weather.features.weatherforecast.domain.location.LocationTracker
 import com.example.weather.features.weatherforecast.domain.repository.WeatherRepository
 import com.example.weather.features.weatherforecast.domain.util.Resource
-import com.example.weather.features.weatherforecast.presentation.utils.CurrentWeatherState
-import com.example.weather.features.weatherforecast.presentation.utils.WeatherState
+import com.example.weather.features.weatherforecast.presentation.states.CurrentWeatherState
+import com.example.weather.features.weatherforecast.presentation.states.WeatherState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,7 +30,11 @@ class WeatherViewModel @Inject constructor(
 
     private var recentWeatherList = mutableListOf<CurrentWeatherState>()
 
-    fun loadWeatherInfo(location : String, searchResult: Boolean, lastSearchedLocation: String){
+    fun loadWeatherInfo(location : String,
+                        searchResult: Boolean,
+                        lastSearchedLocation: String,
+                        favLocation: String
+    ){
         if(!searchResult){
             viewModelScope.launch{
                 _state.postValue(
@@ -47,22 +51,25 @@ class WeatherViewModel @Inject constructor(
                     getForecastWeather("${it.latitude},${it.longitude}")
 
                 }?: kotlin.run {
-
-                    //Location couldn't retrieved, so use last searched location
-                    if (lastSearchedLocation.isNotEmpty())
-                        getForecastWeather(lastSearchedLocation)
-                    else
-                        _state.postValue(
-                            WeatherState(
-                                weatherInfo = null,
-                                searchResults = null,
-                                isLoading = false,
-                                error = "Location couldn't be retrieved!!"
+                    //Location couldn't retrieved, so using favLocation
+                    if (favLocation.isNotBlank()) {
+                        getForecastWeather(favLocation)
+                    } else {
+                        //favLocation is empty too so using last searched location
+                        if (lastSearchedLocation.isNotEmpty())
+                            getForecastWeather(lastSearchedLocation)
+                        else
+                            _state.postValue(
+                                WeatherState(
+                                    weatherInfo = null,
+                                    searchResults = null,
+                                    isLoading = false,
+                                    error = "Location couldn't be retrieved!!"
+                                )
                             )
-                        )
 
-                    Log.e("ForecastError",
-                        "Current Location Not Found instead Last Searched Location is used")
+                        Log.e("ForecastError",   "Current Location Not Found ")
+                    }
                 }
             }
         }
@@ -70,7 +77,6 @@ class WeatherViewModel @Inject constructor(
             getForecastWeather(location)
         }
     }
-
     private fun getForecastWeather(location : String){
         viewModelScope.launch {
 
@@ -116,7 +122,6 @@ class WeatherViewModel @Inject constructor(
             }
         }
     }
-
     fun getAutoCompleteResults(location: String){
         viewModelScope.launch {
             when (val result = weatherRepository.getAutoCompleteLocation( key = APIKEY,location = location)){
@@ -144,7 +149,6 @@ class WeatherViewModel @Inject constructor(
             }
         }
     }
-
     fun getCurrentForecast(location: String , firstCall : Boolean){
 
         if(firstCall) recentWeatherList.clear()
