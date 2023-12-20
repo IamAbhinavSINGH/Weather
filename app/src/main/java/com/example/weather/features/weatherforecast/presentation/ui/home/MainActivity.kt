@@ -223,8 +223,12 @@ class MainActivity : AppCompatActivity() {
             && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
         ){
 
-            if(!isSearchResult)
-                viewModel.loadWeatherInfo("", isSearchResult , recentHistory[0], favLocation)
+            if(!isSearchResult) {
+                if(recentHistory.isNotEmpty())
+                    viewModel.loadWeatherInfo("", isSearchResult, recentHistory[0], favLocation)
+                else
+                    viewModel.loadWeatherInfo("", isSearchResult, "" , favLocation)
+            }
             else
                 viewModel.loadWeatherInfo(searchResult, isSearchResult, recentHistory[0], favLocation)
         /*
