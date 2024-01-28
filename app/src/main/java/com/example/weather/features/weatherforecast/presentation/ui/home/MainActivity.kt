@@ -203,7 +203,6 @@ class MainActivity : AppCompatActivity() {
         permissionBottomSheetDialog.show(supportFragmentManager, PermissionBottomSheetDialog.Tag)
     }
 
-
     /*
         It will first use current location to get weather info, if it fails then it will use favLocation
         to get the weather data and if it fails then it will use last search History to get weather info.
@@ -358,7 +357,7 @@ class MainActivity : AppCompatActivity() {
                         RecentSearchHistoryDetails(
                             locationName = searchHistoryWeather.locationName!!,
                             tempImageURL = searchHistoryWeather.currentWeather?.condition?.icon!!,
-                            temperature = searchHistoryWeather.currentWeather.tempC.toString()
+                            temperature = searchHistoryWeather.currentWeather?.tempC.toString()
                         )
                     )
                 }

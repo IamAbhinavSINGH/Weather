@@ -75,11 +75,13 @@ class SearchActivity : AppCompatActivity() {
 
             if(!it.searchResults.isNullOrEmpty() && clickedOnSearchBolean){
                 clickedOnSearchBolean = false
-                addToSearchHistory(locationName)
 
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 intent.putExtra("SearchResult", locationName)
+
+                addToSearchHistory(locationName)
+
                 startActivity(intent)
             }
             if(it.error != null){

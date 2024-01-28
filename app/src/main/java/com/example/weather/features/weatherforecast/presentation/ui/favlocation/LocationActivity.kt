@@ -8,15 +8,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
-import com.example.weather.R
 import com.example.weather.databinding.ActivityLocationBinding
 import com.example.weather.features.weatherforecast.data.models.autocomplete.AutocompleteItem
 import com.example.weather.features.weatherforecast.presentation.adapters.LocationSearchResultRVAdapter
 import com.example.weather.features.weatherforecast.presentation.adapters.OnItemClickListener
 import com.example.weather.features.weatherforecast.presentation.adapters.RecentFAVSearchesRVAdapter
-import com.example.weather.features.weatherforecast.presentation.adapters.SearchResultsRVAdatper
 import com.example.weather.features.weatherforecast.presentation.adapters.onOtherFavLocationClickListener
-import com.example.weather.features.weatherforecast.presentation.ui.utils.DialogForChangeFavLocation
 import com.example.weather.features.weatherforecast.presentation.ui.utils.FavLocationInformationDialog
 import com.example.weather.features.weatherforecast.presentation.ui.utils.RecentSearchHistoryDetails
 import com.example.weather.features.weatherforecast.presentation.ui.utils.SearchHistoryManager
@@ -65,11 +62,17 @@ class LocationActivity : AppCompatActivity(), OnItemClickListener , onOtherFavLo
             showInfoAboutFavLocation()
         }
     }
-
     private fun initalizeFavLocation(){
         val searchList = searchHistoryManager.getSearchHistory()
         Log.e("searchList" , "${searchList.size}")
-        if(searchList.isEmpty()){
+
+        val faLocationStoredInPreferences = searchHistoryManager.getFavLocation()
+
+        if(faLocationStoredInPreferences.isNotEmpty() && faLocationStoredInPreferences.isNotBlank()){
+            setFavLocation(faLocationStoredInPreferences)
+            initialized = false
+        }
+        else if(searchList.isEmpty()){
             binding.favLocationTV.text = "Add Favorite Location Here"
             binding.favLocationTV.textSize = 12F
             binding.favLocationTempTV.visibility = View.INVISIBLE
