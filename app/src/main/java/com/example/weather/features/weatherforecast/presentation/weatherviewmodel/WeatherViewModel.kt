@@ -180,13 +180,9 @@ class WeatherViewModel @Inject constructor(
                         currentWeather = null,
                         error = result.message
                     ))
-                    _currentWeatherState.postValue(
-                        recentWeatherList
-                    )
 
                     Log.e("ItemChangeListener" , "$location , result failed")
                 }
-                else -> {}
             }
             Log.e("ItemChangeListener" , recentWeatherList.size.toString())
         }
