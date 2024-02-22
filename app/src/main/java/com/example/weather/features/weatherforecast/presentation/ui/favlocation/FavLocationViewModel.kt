@@ -70,7 +70,6 @@ class FavLocationViewModel @Inject constructor(
             }
         }
     }
-
     fun getCurrentWeatherData(location: String){
         viewModelScope.launch {
             when(val result = weatherRepository.getCurrentForecast(API_KEY, location, "NO")){
@@ -97,7 +96,6 @@ class FavLocationViewModel @Inject constructor(
             }
         }
     }
-
     fun getListWeatherData(locationList : List<String>){
         locationList.forEachIndexed{ index: Int, location: String ->
             if(index == 0)
@@ -108,7 +106,6 @@ class FavLocationViewModel @Inject constructor(
 
 
     }
-
     private fun getWeatherDataForOneListItem(locationName : String , firstCall : Boolean){
         if(firstCall) recentWeatherList.clear()
 
