@@ -1,8 +1,13 @@
 package com.example.weather.features.weatherforecast.presentation.ui.notification.workmanager
 
 import android.Manifest
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Icon
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -12,15 +17,21 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import coil.Coil
 import com.example.weather.R
 import com.example.weather.features.weatherforecast.data.WeatherApi
 import com.example.weather.features.weatherforecast.data.repository.WeatherRepositoryImplementation
 import com.example.weather.features.weatherforecast.domain.util.Resource
+import com.example.weather.features.weatherforecast.presentation.ui.home.MainActivity
 import com.example.weather.features.weatherforecast.presentation.ui.utils.SearchHistoryManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.invoke
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.IOException
+import java.net.URL
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -34,6 +45,7 @@ class NotificationWorkManager @Inject constructor(
     private var temperatureInFahrenheit = 0
     private var imageUrl = ""
     private var errorMsg = ""
+    private var currentWeather: String = ""
 
     private val api = Retrofit.Builder()
         .baseUrl("https://api.weatherapi.com/v1/")
@@ -57,23 +69,21 @@ class NotificationWorkManager @Inject constructor(
             if(wasCallSuccessful){
                 notificationText = "$temperatureInCelsius°C in $favLocation"
                 iconInNotification = imageUrl
-                startForeGroundService(notificationText, iconInNotification)
+                startForeGroundService(notificationText, iconInNotification , currentWeather)
 
                 scheduleNextWork()
-
-                Log.e("startForegroundService", notificationText)
 
                 return@withContext Result.success()
             }else{
                 notificationText = "Couldn't find weather detail!!!"
-                startForeGroundService(notificationText, "")
+                startForeGroundService(notificationText, "", "")
 
                 Log.e("startForegroundService", notificationText)
                 return@withContext Result.failure()
             }
         }
     }
-    private fun startForeGroundService(notificationText: String, imageUrl: String){
+    private fun startForeGroundService(notificationText: String, imageUrl: String, currentWeather: String){
 
         val manager = NotificationManagerCompat.from(applicationContext)
         if (ActivityCompat.checkSelfPermission(
@@ -83,11 +93,27 @@ class NotificationWorkManager @Inject constructor(
         ) {
             return
         }
+
+        val intent = Intent(context, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT // Update any existing pending intent with the same request code
+        )
+
+        val bitmap = applyImageUrl(imageUrl)
+
         manager.notify( NOTIFICATION_ID ,
             NotificationCompat.Builder(applicationContext, "WeatherInformation")
-                .setContentText(notificationText)
-                .setContentTitle("Weather")
-                .setSmallIcon(R.drawable.ic_weather_icon)
+                .setContentTitle(notificationText)
+                .setContentText(currentWeather)
+                .setSmallIcon(R.drawable.weather_icon)
+                .setLargeIcon(bitmap)
+                .setContentIntent(pendingIntent)
                 .build()
         )
 
@@ -104,6 +130,7 @@ class NotificationWorkManager @Inject constructor(
                 temperatureInCelsius = result.data?.current?.tempC?.toInt()!!
                 temperatureInFahrenheit = result.data.current.tempF?.toInt()!!
                 imageUrl = result.data.current.condition?.icon!!
+                currentWeather = result.data.current.condition.text.toString()
 
                 return true
             }
@@ -126,5 +153,21 @@ class NotificationWorkManager @Inject constructor(
         val workManager = WorkManager.getInstance(applicationContext)
         workManager.enqueueUniqueWork("NextWork", ExistingWorkPolicy.REPLACE, nextWorkRequest)
     }
+    
+    //Loads an Image from its url asynchronously and throws an IOException if it does not gets the image
+    fun applyImageUrl( imageUrl: String): Bitmap? = runBlocking {
+        val url = URL("https:$imageUrl")
 
+        withContext(Dispatchers.IO) {
+            try {
+                val input = url.openStream()
+                BitmapFactory.decodeStream(input)
+            } catch (e: IOException) {
+                e.printStackTrace()
+                null
+            }
+        }?.let { bitmap ->
+           return@runBlocking bitmap
+        }
+    }
 }
